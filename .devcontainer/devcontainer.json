@@ -9,8 +9,7 @@
 		"ghcr.io/devcontainers-extra/features/terraform-ls-asdf:2": {},
 		"ghcr.io/devcontainer-community/devcontainer-features/asdf-vm.com:1": {},
 		"ghcr.io/roul/devcontainer-features/kamal:1": {},
-		"ghcr.io/itsmechlark/features/postgresql:1": {},
-		"ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {},
-		"ghcr.io/devcontainers-extra/features/mysql-homebrew:1": {}
+		"ghcr.io/devcontainers/features/ruby:1": {}
+		
 	}
 }
