@@ -6,7 +6,7 @@ defmodule GreatAppWeb.PageController do
   end
 
   def hello(conn, _params) do
-    json(conn, %{message: "Hello, World!"})
+    html(conn, "hello , worlds")
   end
 
   # def goodbye(conn, _params) do
