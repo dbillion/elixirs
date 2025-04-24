@@ -6,7 +6,14 @@ defmodule MysocialappWeb.PostLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :posts, list_posts())}
+        if connected?(socket), do: Timeline.subscribe()
+
+    # {:ok,socket
+    #  |> assign(:page_title, "Listing Posts")
+    #  |> assign(:posts, list_posts())
+    #  |> assign(:live_action, :index)}
+    # {:ok, assign(socket, :posts, list_posts())}
+    {:ok, assign(socket, :posts, fetch_posts(), temporary_assigns: [posts: []])}
   end
 
   @impl true
@@ -39,6 +46,17 @@ defmodule MysocialappWeb.PostLive.Index do
 
     {:noreply, assign(socket, :posts, list_posts())}
   end
+
+  @impl true
+  def handle_info(%{post_created: post}, socket) do
+    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
+  end
+
+
+  def handle_info(%{post_updated: post}, socket) do
+    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
+  end
+
 
   defp list_posts do
     Timeline.list_posts()

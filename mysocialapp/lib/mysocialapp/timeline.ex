@@ -5,6 +5,7 @@ defmodule Mysocialapp.Timeline do
 
   import Ecto.Query, warn: false
   alias Mysocialapp.Repo
+  alias Phoenix.PubSub
 
   alias Mysocialapp.Timeline.Post
 
@@ -18,7 +19,7 @@ defmodule Mysocialapp.Timeline do
 
   """
   def list_posts do
-    Repo.all(Post)
+    Repo.all(from p in Post, order_by: [desc: p.id])
   end
 
   @doc """
@@ -53,6 +54,7 @@ defmodule Mysocialapp.Timeline do
     %Post{}
     |> Post.changeset(attrs)
     |> Repo.insert()
+    |>broadcast(:post_created)
   end
 
   @doc """
@@ -70,7 +72,10 @@ defmodule Mysocialapp.Timeline do
   def update_post(%Post{} = post, attrs) do
     post
     |> Post.changeset(attrs)
+    |>broadcast(:post_created)
     |> Repo.update()
+    |>broadcast(:post_created)
+
   end
 
   @doc """
@@ -89,6 +94,16 @@ defmodule Mysocialapp.Timeline do
     Repo.delete(post)
   end
 
+  def subscribe do
+    PubSub.subscribe(Mysocialapp.PubSub, "posts")
+  end
+
+  defp broadcast({error, _reason} = error, _event) , do: error
+
+  defp broadcast({:ok, post}, event) do
+    PubSub.broadcast(Mysocialapp.PubSub, "posts", %{event: post})
+    {:ok, post}
+  end
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking post changes.
 

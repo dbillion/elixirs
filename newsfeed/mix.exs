@@ -43,7 +43,7 @@ defmodule Newsfeed.MixProject do
       {:phoenix_live_dashboard, "~> 0.4"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
+
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       # Message broker dependencies
