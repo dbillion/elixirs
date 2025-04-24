@@ -17,7 +17,7 @@ defmodule GreatAppWeb.Router do
   scope "/", GreatAppWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", PageController, :hello
   end
 
   # Other scopes may use custom stacks.
