@@ -50,6 +50,28 @@ ensure_plugins() {
     echo "Adding Elixir plugin..."
     asdf plugin add elixir
   fi
+  
+  # Set environment variables to skip documentation building
+  # This avoids needing xsltproc and fop
+  export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac --without-wx --without-odbc --disable-docs"
+  export KERL_BUILD_DOCS="no"
+  
+  # Ensure SSL certificates are available 
+  mkdir -p ~/.mix
+  if [ ! -f ~/.mix/ca-bundle.crt ]; then
+    echo "Downloading CA certificate bundle for SSL verification..."
+    curl -s -o ~/.mix/ca-bundle.crt https://curl.se/ca/cacert.pem
+  fi
+  
+  # Set SSL certificate environment variables
+  export SSL_CERT_FILE=$HOME/.mix/ca-bundle.crt
+  export HEX_CACERTS_PATH=$HOME/.mix/ca-bundle.crt
+  
+  # Add these to bashrc if not already there
+  if ! grep -q "SSL_CERT_FILE" ~/.bashrc; then
+    echo 'export SSL_CERT_FILE=$HOME/.mix/ca-bundle.crt' >> ~/.bashrc
+    echo 'export HEX_CACERTS_PATH=$HOME/.mix/ca-bundle.crt' >> ~/.bashrc
+  fi
 }
 
 # Function to parse version range
