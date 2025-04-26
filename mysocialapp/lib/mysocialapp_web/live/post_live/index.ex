@@ -6,7 +6,13 @@ defmodule MysocialappWeb.PostLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :posts, list_posts())}
+    if connected?(socket), do: Timeline.subscribe()
+
+    {:ok,
+     socket
+     |> assign(:posts, list_posts())
+     |> assign(:page_title, "Listing Posts")
+     |> assign(:live_action, :index)}
   end
 
   @impl true
@@ -38,6 +44,11 @@ defmodule MysocialappWeb.PostLive.Index do
     {:ok, _} = Timeline.delete_post(post)
 
     {:noreply, assign(socket, :posts, list_posts())}
+  end
+
+  @impl true
+  def handle_info(%{event: post}, socket) do
+    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
 
   defp list_posts do

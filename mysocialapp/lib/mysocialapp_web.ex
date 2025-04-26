@@ -22,7 +22,7 @@ defmodule MysocialappWeb do
       use Phoenix.Controller, namespace: MysocialappWeb
 
       import Plug.Conn
-      import MysocialappWeb.Gettext
+      use Gettext, backend: MysocialappWeb.Gettext
       alias MysocialappWeb.Router.Helpers, as: Routes
     end
   end
@@ -72,7 +72,7 @@ defmodule MysocialappWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import MysocialappWeb.Gettext
+      use Gettext, backend: MysocialappWeb.Gettext
     end
   end
 
@@ -89,7 +89,7 @@ defmodule MysocialappWeb do
       import Phoenix.View
 
       import MysocialappWeb.ErrorHelpers
-      import MysocialappWeb.Gettext
+      use Gettext, backend: MysocialappWeb.Gettext
       alias MysocialappWeb.Router.Helpers, as: Routes
     end
   end

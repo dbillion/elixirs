@@ -20,5 +20,5 @@ defmodule MysocialappWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :mysocialapp
+  use Gettext.Backend, otp_app: :mysocialapp
 end
